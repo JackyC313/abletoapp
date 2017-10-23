@@ -255,3 +255,24 @@ May need to explore this more in the future on whether the batch notation is bat
 [Done]
 * Fix up Controller comments
 * Should probably move the dashboard link to the top (protected by authentication) so it's more convenient
+
+## Deployment
+1. Get files in current directory
+```
+git clone https://github.com/JackyC313/abletoapp.git .
+```
+2. Add .env file in root and put in db settings
+
+3. Install composer dependencies (no dev flag for prod env)
+```
+php composer install --no-dev
+```
+4. Generate new key
+```
+php artisan key:generate
+```
+5. Generate tables and then run db seed to get some test data
+```
+php artisan migrate
+php artisan db:seed
+```
