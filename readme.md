@@ -1,6 +1,30 @@
 # AbleTo Project
 Live version @ http://abletoapp.angworld.com
 
+- [AbleTo Project](#ableto-project)
+  * [Project Description](#project-description)
+  * [Developer Notes/Question/Answers](#developer-notes-question-answers)
+  * [Summary of User Workflows](#summary-of-user-workflows)
+  * [Quick Start Deployment](#quick-start-deployment)
+  * [App Testing](#app-testing)
+    + [Seeding Test Data](#seeding-test-data)
+  * [Development Outline](#development-outline)
+  * [Developer Notes](#developer-notes)
+    + [Laravel Set Up](#laravel-set-up)
+    + [CSS & JS Set Up](#css---js-set-up)
+    + [DB Set Up](#db-set-up)
+      - [Create Database Tables for Questions/Options/Answers](#create-database-tables-for-questions-options-answers)
+    + [Models & Controllers Set Up](#models---controllers-set-up)
+      - [Create Model/Controllers](#create-model-controllers)
+    + [Laravel Dependency Set Up](#laravel-dependency-set-up)
+      - [Add Login Scaffolding](#add-login-scaffolding)
+      - [Add Form Helper](#add-form-helper)
+      - [Created Custom helper for blade templates](#created-custom-helper-for-blade-templates)
+      - [Add Charts/Graphing](#add-charts-graphing)
+    + [Testing Set Up](#testing-set-up)
+  * [TODO Notes](#todo-notes)
+
+
 ## Project Description
 Build a webapp with a login page (using Laravel 5.X). 
 
@@ -272,9 +296,9 @@ php artisan dusk:make SiteTest
 * (low priority): Could probably do more graphs for fun
     * All Questions vs Number of Answers
     * All Answers vs Number of Answers
-* (low priority): Add Table of Contents to readme
 
 [Done]
+* (low priority): Add Table of Contents to readme (used a neat tool @https://ecotrust-canada.github.io/markdown-toc/ to generate ToC )
 * (high): Refactored Site Unit Tests
 * (high): Added Model Factory Unit Tests
 * (high): Fix up Controller comments
