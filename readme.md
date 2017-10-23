@@ -1,4 +1,5 @@
 # AbleTo Project
+Live version @ http://abletoapp.angworld.com
 
 ## Project Description
 Build a webapp with a login page (using Laravel 5.X). 
@@ -53,8 +54,7 @@ https://erik.cat/projects/Charts/docs/5
 ```
 git clone https://github.com/JackyC313/abletoapp.git .
 ```
-2. a. Add .env file in root and put in proper app settings and database connection info
-2. b. in proper app settings and database connection info
+2. Add .env file in root and put in proper app settings and database connection info
 
 3. Install composer dependencies (no dev flag for prod env)
 ```
