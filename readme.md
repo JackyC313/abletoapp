@@ -3,7 +3,7 @@ Live version @ http://abletoapp.angworld.com
 
 - [AbleTo Project](#ableto-project)
   * [Project Description](#project-description)
-  * [Developer Notes/Question/Answers](#developer-notes-question-answers)
+  * [Developer Notes/Question/Answers](#developer-notesquestionanswers)
   * [Summary of User Workflows](#summary-of-user-workflows)
   * [Quick Start Deployment](#quick-start-deployment)
   * [App Testing](#app-testing)
@@ -13,7 +13,7 @@ Live version @ http://abletoapp.angworld.com
     + [Laravel Set Up](#laravel-set-up)
     + [CSS & JS Set Up](#css---js-set-up)
     + [DB Set Up](#db-set-up)
-      - [Create Database Tables for Questions/Options/Answers](#create-database-tables-for-questions-options-answers)
+      - [Create Database Tables for Questions/Options/Answers](#developer-notesquestionanswers)
     + [Models & Controllers Set Up](#models---controllers-set-up)
       - [Create Model/Controllers](#create-model-controllers)
     + [Laravel Dependency Set Up](#laravel-dependency-set-up)
