@@ -30,9 +30,9 @@ Recommendations:  I am thinking of playing around with what would look nice with
 Answer: Recommendation makes sense.
 
 Graphing:
-Some options to do graphing later.  Will need to explore what would look good.
-http://www.chartjs.org
-http://www.pchart.net
+Found a Laravel Charting/Graphing package that also seems to be kept up to date.  Used that for now
+https://github.com/ConsoleTVs/Charts  
+https://erik.cat/projects/Charts/docs/5  
 
 ## Summary of User Workflows
 1. Users entering the app are initially not logged in and are presented with the option to register or login
@@ -50,6 +50,7 @@ http://www.pchart.net
 
 ## Development Outline
 1. Build the initial framework for project
+    * Documentation
     * DB Tables
     * Controllers
     * Models
@@ -80,8 +81,32 @@ http://www.pchart.net
         - id (unique id)
         - user_id (the user the answer belongs to)
         - question_id (the question the answer belongs to)
-        - option_id (the optioin the answer belongs to)
-    
+        - option_id (the option the answer belongs to)
+5. Set Up Routing
+    * /
+    * /dashboard
+    * /question/{id}/show
+    * /question/{id}/submit
+    * /question/{id}/result
+6. Front End
+    * Layout
+    * Partials
+        * TopNavigation
+        * StatusMessages
+        * QuestionUnanswered
+        * QuestionAnswered
+    * Pages
+        * FrontPage
+        * Dashboard
+        * QuestionAnswer
+        * QuestionResult
+7. Testing
+    * Page Testing
+    * Submission
+8. Test Data Seeding
+    * Users Seed
+    * Questions Seed (should create up to 4 options for each question)
+    * Answers Seed
 
 ## Developer Notes
 This is a quick start/section for any other developers who would like to get started on a fresh copy of laravel and run through the initial set ups for this project
@@ -90,13 +115,20 @@ This is a quick start/section for any other developers who would like to get sta
 composer create-project --prefer-dist laravel/laravel abletoapp
 ```
 ### CSS & JS Set Up
+Add custom css file
+resources\assets\sass\_main.scss 
+in resources\assets\sass\app.scss  
+```
+// Main (custom styles)
+@import "main";
+```
+Compile public app.js and app.css
 ```
 npm install
 npm run dev
 ```
-
 ### DB Set Up
-set up database:
+update .env with database info:
 db: -  
 user: -  
 pw: -  
@@ -117,13 +149,13 @@ php artisan make:migration create_questions_table --create=questions
 php artisan make:migration create_options_table --create=options  
 php artisan make:migration create_answers_table --create=answers  
 ```
-
 ### Models & Controllers Set Up
 #### Create Model/Controllers
 ```
+php artisan make:controller SiteController
 php artisan make:controller QuestionController --model=Question  
 php artisan make:controller OptionController --model=Option  
-php artisan make:controller AnswerController --resource --model=Answer  
+php artisan make:controller AnswerController --model=Answer  
 ```
 ### Laravel Package Set Up
 #### Add Login Scaffolding
@@ -134,3 +166,78 @@ php artisan make:auth
 ```
 composer require "laravelcollective/html":"^5.4.0"
 ```
+#### Custom helper for blade templates  
+https://code.tutsplus.com/tutorials/how-to-create-a-laravel-helper--cms-28537  
+```
+php artisan make:provider AngServiceProvider
+```
+in \config\app.php
+```
+        // providers
+        App\Providers\AngServiceProvider::class,
+
+        // aliasesa
+        'AngBlade' => App\Helpers\Ang\Blade::class,
+```
+#### Charts/Graphing Package  
+```
+composer require consoletvs/charts:5.*
+```
+
+```
+php artisan vendor:publish
+```
+
+### Testing Set Up
+Initialized Tests Files
+```
+php artisan make:test SiteTest
+
+composer require --dev laravel/dusk
+php artisan dusk:install  
+php artisan dusk:make SiteTest
+```
+### App Testing
+Regular PHP Unit SiteTests to test visiting pages
+```
+vendor/bin/phpunit tests/Feature/SiteTest.php
+```
+Laravel Dusk Test to test question submission
+```
+php artisan dusk --filter SiteTest
+```
+### Seeding Test Data
+Model Factories
+
+```
+factory(App\User::class)->create();  
+factory(App\Question::class)->create();  
+factory(App\Option::class)->create();  
+factory(App\Answer::class)->create();  
+```
+DEV NOTES:
+* Options created look for Questions that has less than 4 options already so as to not fill it up too much with options
+* Answers create make sure that user's only have 1 answer for each question  
+
+```
+php artisan db:seed --class=UsersTableSeeder  
+php artisan db:seed --class=QuestionsTableSeeder  
+php artisan db:seed --class=AnswersTableSeeder  
+or just
+php artisan db:seed
+```
+
+DEV NOTE: 
+* Questions seeded will also have 4 options made for them
+* Found a bug where when using batch create notation such as
+```
+       factory(App\Answer::class, 10)->create();
+```
+The logic to check constraints on the collection of data in the factory do not reflect the newest created object collection. And so the AnswersTable seed was rewritten as a for loop which seems to do the trick.  
+```
+        for($i = 0; $i <= 10; $i++) {
+            factory(App\Answer::class)->create();
+        };
+    }
+```
+May need to explore this more in the future on whether the batch notation is batching up the SQL Creates and running it all as a transaction. This may also be an issue for the when we want to batch create options as there is logic in that factory as well.
