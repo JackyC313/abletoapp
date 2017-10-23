@@ -11,19 +11,19 @@
 |
 */
 
-/*
-Route::get('/', function () {
-    return view('welcome');
-});
-*/
-
+// Laravel Authentication routes
 Auth::routes();
 
-Route::get('/', 'SiteController@index');
+// Index Route - homepage
+Route::get('/', 'SiteController@index')->name('index');
 
+// Dashboard Route - logged in view
 Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
 
-Route::get('/question/{question}/index', 'QuestionController@index');
-Route::post('/question/{question}/submit', 'AnswerController@store');
+// Questions Route - question view and their multiple choice answers
+Route::get('/question/{question}/index', 'QuestionController@index')->name('question_index');
+// Questions Route - processing for user answer submission
+Route::post('/question/{question}/submit', 'AnswerController@store')->name('question_submit');
 
-Route::get('/question/{question}/results', 'QuestionController@results');
+// Questions Result Route - results view of all answers for that question
+Route::get('/question/{question}/results', 'QuestionController@results')->name('question_result');

@@ -42,10 +42,10 @@ https://erik.cat/projects/Charts/docs/5
     * These questions are sorted by ones they can answer and the rest are ones that have been answered
     * Each question would have links on them
         * Unanswered questions links lets the user answer the question
-        * Answered questions links lets the user see the results of the question (Note: This is unavailble for unanswered questions to give incentive for users to answer it so they can see the results)
+        * Answered questions links lets the user see the results of the question (Note: If for some reason, a user decided to "hack" the url to see question results when they haven't answered the question yet, it is still unavailable to give incentive for users to answer it so they can actually see the results.)
 3. If a user chooses to answer a question, they are present the question with the multiple answers and a submit button.
     * They are required to pick an answer to submit
-    * Once there is a valid submission, they are brough back to the dashboard with the status of the submission
+    * Once there is a valid submission, they are brought to the question results page with the status of the submission
 4. If the user chooses to see the question results, there would be a graph showing the number of people having the answers for each choice (similar to a poll results graph)
 
 ## Development Outline
@@ -238,6 +238,20 @@ The logic to check constraints on the collection of data in the factory do not r
         for($i = 0; $i <= 10; $i++) {
             factory(App\Answer::class)->create();
         };
-    }
 ```
 May need to explore this more in the future on whether the batch notation is batching up the SQL Creates and running it all as a transaction. This may also be an issue for the when we want to batch create options as there is logic in that factory as well.
+
+
+## TODO Notes
+[Pending]
+* Push a stable version to production
+* Controller & Model Unit Tests
+* Can add pagination for questions when it gets to be a lot (more than 5 for each group [answered, unanswered])
+* Could probably make the question dynamically show via a hidden div when an unanswered question is clicked on the dashboard providing a smoother user friendly experience instead of a page refresh/reload.
+* Could probably do more graphs for fun
+    * All Questions vs Number of Answers
+    * All Answers vs Number of Answers
+
+[Done]
+* Fix up Controller comments
+* Should probably move the dashboard link to the top (protected by authentication) so it's more convenient

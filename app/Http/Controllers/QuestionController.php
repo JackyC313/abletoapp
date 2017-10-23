@@ -16,11 +16,12 @@ class QuestionController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Display a question and their multiple choice options.
      *
+     * @param  \App\Question $question
      * @return \Illuminate\Http\Response
      */
-    public function index($question_id)
+    public function index(Question $question)
     {
         // Check if user has an answer already for this question
         $user_id = auth()->user()->id;
@@ -31,23 +32,24 @@ class QuestionController extends Controller
             return $answer->question->id;
         })->toArray();
 
-        if(in_array($question_id, $questions_id_answered)) {
+        // If the user already has an answer for this question
+        // send them to the dashboard with the proper error message        
+        if(in_array($question->id, $questions_id_answered)) {
             return redirect('/dashboard')->with('error', 'You have already answered that question');
         }
 
-        $question = Question::find($question_id);
         return view('pages.question_index')->with('question', $question);
     }
 
     /**
-     * Display a listing of the question results.
+     * Display the question results.
      *
-     * @param  \App\Question  $question
+     * @param  \App\Question $question
      * @return \Illuminate\Http\Response
      */
-    public function results($question_id)
+    public function results(Question $question)
     {
-        // Check if user has an answer already for this question
+        // Check if user answer has an already for this question
         $user_id = auth()->user()->id;
         $user = User::find($user_id);
 
@@ -56,11 +58,13 @@ class QuestionController extends Controller
             return $answer->question->id;
         })->toArray();
 
-        if(!in_array($question_id, $questions_id_answered)) {
-            return redirect('/question/'.$question_id.'/index')->with('error', 'You have not yet answered this question, why not answer it first?');
+        // If the user already has an answer for this question
+        // send them over to the question page to give them an incentive to fill it out
+        if(!in_array($question->id, $questions_id_answered)) {
+            return redirect('/question/'.$question->id.'/index')->with('error', 'You have not yet answered this question, why not answer it first?');
         }
 
-        $question = Question::find($question_id)->load('options.answers');
+        // Answers data for graphing
         $optionsArray = array();
         $optionsArray = $question->options->reduce(function($optionsArray, $option) {
             $optionsArray["count"][$option->id] = count($option->answers); 

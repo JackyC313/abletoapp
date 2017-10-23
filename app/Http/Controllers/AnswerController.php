@@ -15,16 +15,17 @@ class AnswerController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created answer in storage.
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Question $question
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request, Question $question)
     {
         $question_id = $question->id;
 
-        // Check for valid option ids
+        // Form validatioin to check for valid [ids that belong to that question] option ids
         $validate = [];
         if( (count($question) > 0) && (count($question->options) > 0) ) {
             $validOptions = "";
@@ -36,7 +37,7 @@ class AnswerController extends Controller
         }
         $this->validate($request, $validate);
 
-        // Check if user has an answer already for this question
+        // Check if user already has an answer for this question
         $user_id = auth()->user()->id;
         $user = User::find($user_id);
 
@@ -45,6 +46,8 @@ class AnswerController extends Controller
             return $answer->question->id;
         })->toArray();
 
+        // If the user already has an answer for this question
+        // send them to the dashboard with the proper error message
         if(in_array($question_id, $questions_id_answered)) {
             return redirect('/dashboard')->with('error', 'You have already answered that question');
         }
@@ -57,6 +60,6 @@ class AnswerController extends Controller
         $submittedAnswer->user_id = auth()->user()->id;
             
         $submittedAnswer->save();
-        return redirect()->action('QuestionController@results', [$question_id]);
+        return redirect()->action('QuestionController@results', [$question_id])->with('success', 'Your submission has been entered');
     }
 }

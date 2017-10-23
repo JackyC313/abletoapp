@@ -6,7 +6,16 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-            <li class="{{ AngBlade::isActiveURL('/') }}"><a href="/">Home</a></li>
+@if (Auth::check())
+                <li class="{{ AngBlade::isActiveURL('dashboard') }}">
+                    <a href="{{ route('dashboard') }}">
+                        Dashboard
+                    </a>
+                </li>
+@else
+                <li class="{{ AngBlade::isActiveURL('/') }}"><a href="/">Home</a></li>
+@endif
+
             </ul>
             <!-- Right Side Of Navbar -->
             <ul class="nav navbar-nav navbar-right">
@@ -21,11 +30,6 @@
                         </a>
 
                         <ul class="dropdown-menu" role="menu">
-                            <li class="{{ AngBlade::isActiveURL('dashboard') }}">
-                                <a href="{{ route('dashboard') }}">
-                                    Dashboard
-                                </a>
-                            </li>
                             <li>
                                 <a href="{{ route('logout') }}"
                                     onclick="event.preventDefault();
