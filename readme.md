@@ -48,6 +48,73 @@ https://erik.cat/projects/Charts/docs/5
     * Once there is a valid submission, they are brought to the question results page with the status of the submission
 4. If the user chooses to see the question results, there would be a graph showing the number of people having the answers for each choice (similar to a poll results graph)
 
+## Quick Start Deployment
+1. Get files in current directory
+```
+git clone https://github.com/JackyC313/abletoapp.git .
+```
+2. a. Add .env file in root and put in proper app settings and database connection info
+2. b. in proper app settings and database connection info
+
+3. Install composer dependencies (no dev flag for prod env)
+```
+php composer install --no-dev
+```
+4. Generate new key
+```
+php artisan key:generate
+```
+5. Generate tables and then run db seed to get some test data
+```
+php artisan migrate
+php artisan db:seed
+```
+
+## App Testing
+Regular PHP Unit SiteTests to test visiting pages
+```
+vendor/bin/phpunit tests/Feature/SiteTest.php
+```
+Laravel Dusk Test new way to test browser tests 
+TODO (low priority): Build all browser tests in dusk
+```
+php artisan dusk --filter BrowserSiteTest
+```
+### Seeding Test Data
+
+Model Factories
+```
+factory(App\User::class)->create();  
+factory(App\Question::class)->create();  
+factory(App\Option::class)->create();  
+factory(App\Answer::class)->create();  
+```
+DEV NOTES:
+* Options created look for Questions that has less than 4 options already so as to not fill it up too much with options
+* Answers create make sure that user's only have 1 answer for each question  
+
+```
+php artisan db:seed --class=UsersTableSeeder  
+php artisan db:seed --class=QuestionsTableSeeder  
+php artisan db:seed --class=AnswersTableSeeder  
+or just
+php artisan db:seed
+```
+
+DEV NOTE: 
+* Questions seeded will also have 4 options made for them
+* Found a bug where when using batch create notation such as
+```
+       factory(App\Answer::class, 10)->create();
+```
+The logic to check constraints on the collection of data in the factory do not reflect the newest created object collection. And so the AnswersTable seed was rewritten as a for loop which seems to do the trick.  
+```
+        for($i = 0; $i <= 10; $i++) {
+            factory(App\Answer::class)->create();
+        };
+```
+May need to explore this more in the future on whether the batch notation is batching up the SQL Creates and running it all as a transaction. This may also be an issue for the when we want to batch create options as there is logic in that factory as well.
+
 ## Development Outline
 1. Build the initial framework for project
     * Documentation
@@ -157,16 +224,17 @@ php artisan make:controller QuestionController --model=Question
 php artisan make:controller OptionController --model=Option  
 php artisan make:controller AnswerController --model=Answer  
 ```
-### Laravel Package Set Up
+### Laravel Dependency Set Up
+
 #### Add Login Scaffolding
 ```
 php artisan make:auth
 ```
-#### Form Helper Package
+#### Add Form Helper 
 ```
 composer require "laravelcollective/html":"^5.4.0"
 ```
-#### Custom helper for blade templates  
+#### Created Custom helper for blade templates  
 https://code.tutsplus.com/tutorials/how-to-create-a-laravel-helper--cms-28537  
 ```
 php artisan make:provider AngServiceProvider
@@ -179,100 +247,37 @@ in \config\app.php
         // aliasesa
         'AngBlade' => App\Helpers\Ang\Blade::class,
 ```
-#### Charts/Graphing Package  
+#### Add Charts/Graphing
 ```
 composer require consoletvs/charts:5.*
-```
-
-```
-php artisan vendor:publish
 ```
 
 ### Testing Set Up
 Initialized Tests Files
 ```
 php artisan make:test SiteTest
+php artisan make:test ModelTest
 
 composer require --dev laravel/dusk
 php artisan dusk:install  
 php artisan dusk:make SiteTest
 ```
-### App Testing
-Regular PHP Unit SiteTests to test visiting pages
-```
-vendor/bin/phpunit tests/Feature/SiteTest.php
-```
-Laravel Dusk Test to test question submission
-```
-php artisan dusk --filter SiteTest
-```
-### Seeding Test Data
-Model Factories
-
-```
-factory(App\User::class)->create();  
-factory(App\Question::class)->create();  
-factory(App\Option::class)->create();  
-factory(App\Answer::class)->create();  
-```
-DEV NOTES:
-* Options created look for Questions that has less than 4 options already so as to not fill it up too much with options
-* Answers create make sure that user's only have 1 answer for each question  
-
-```
-php artisan db:seed --class=UsersTableSeeder  
-php artisan db:seed --class=QuestionsTableSeeder  
-php artisan db:seed --class=AnswersTableSeeder  
-or just
-php artisan db:seed
-```
-
-DEV NOTE: 
-* Questions seeded will also have 4 options made for them
-* Found a bug where when using batch create notation such as
-```
-       factory(App\Answer::class, 10)->create();
-```
-The logic to check constraints on the collection of data in the factory do not reflect the newest created object collection. And so the AnswersTable seed was rewritten as a for loop which seems to do the trick.  
-```
-        for($i = 0; $i <= 10; $i++) {
-            factory(App\Answer::class)->create();
-        };
-```
-May need to explore this more in the future on whether the batch notation is batching up the SQL Creates and running it all as a transaction. This may also be an issue for the when we want to batch create options as there is logic in that factory as well.
-
 
 ## TODO Notes
 [Pending]
-* Push a stable version to production
-* Controller & Model Unit Tests
-* Can add pagination for questions when it gets to be a lot (more than 5 for each group [answered, unanswered])
-* Could probably make the question dynamically show via a hidden div when an unanswered question is clicked on the dashboard providing a smoother user friendly experience instead of a page refresh/reload.
-* Could probably do more graphs for fun
+* (mid priority): Can add pagination for questions when it gets to be a lot (more than 5 for each group [answered, unanswered])
+* (low priority): Create Seeder with better question/answers instead of relying on faker
+* (low priority): Could probably make the question dynamically show via a hidden div when an unanswered question is clicked on the dashboard providing a smoother user friendly experience instead of a page refresh/reload.
+* (low priority): Build all browser tests in dusk
+* (low priority): Could probably do more graphs for fun
     * All Questions vs Number of Answers
     * All Answers vs Number of Answers
+* (low priority): Add Table of Contents to readme
 
 [Done]
-* Fix up Controller comments
-* Should probably move the dashboard link to the top (protected by authentication) so it's more convenient
+* (high): Refactored Site Unit Tests
+* (high): Added Model Factory Unit Tests
+* (high): Fix up Controller comments
+* (low): Should probably move the dashboard link to the top (protected by authentication) so it's more convenient
+* (high): Push a stable version to production
 
-## Deployment
-1. Get files in current directory
-```
-git clone https://github.com/JackyC313/abletoapp.git .
-```
-2. Add .env file in root and put in db settings
-
-3. Install composer dependencies (no dev flag for prod env)
-```
-php composer install --no-dev
-```
-4. Generate new key
-```
-php artisan key:generate
-```
-5. Generate tables and then run db seed to get some test data
-```
-php artisan migrate
-php artisan db:seed
-```

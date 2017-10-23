@@ -54,21 +54,12 @@ $factory->define(App\Answer::class, function (Faker $faker) {
         $answer->where('question_id', '=', $fake_question_id);
     })->pluck('id')->toArray();
 
-    // echo "Question ID $fake_question_id";
-    // print_r($users);
     // Create new user if no valid users are found
     if(!empty($users)) {
         $fake_user_id = $faker->randomElement($users);
     } else {
         $fake_user_id = factory(App\User::class)->create()->id;
-        // echo "New User Created $fake_user_id";
     }
-    // $data = array(
-    //     'question_id' => $fake_question_id,
-    //     'option_id' => $fake_option_id,
-    //     'user_id' => $fake_user_id,
-    // );
-    // print_r($data);
     return [
         'question_id' => $fake_question_id,
         'option_id' => $fake_option_id,

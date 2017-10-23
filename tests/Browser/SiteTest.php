@@ -5,13 +5,15 @@ namespace Tests\Browser;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\User;
 use App\Question;
 use App\Option;
 
 class SiteTest extends DuskTestCase
 {
-//    use DatabaseMigrations;
+    // use DatabaseMigrations;
+    use DatabaseTransactions;
     /**
      * Test each url
      * Site has the follow different pages
@@ -27,10 +29,16 @@ class SiteTest extends DuskTestCase
      * 
      */
 
-
-    //                                - index                 [not login protected]
-    // Index Test while not logged in 
-    // Should show welcome msg "Welcome to the AbleTo App" in heading
+    /**
+     * /                                - index                 [not login protected]
+     * 
+     * Index Test while not logged in 
+     * Should show welcome msg "Welcome to the AbleTo App" in heading
+     * 
+     * @group BrowserSiteTest 
+     * @test
+     * @return void
+     */
     public function testIndexNotLoggedIn()
     {
         $this->browse(function (Browser $browser) {
@@ -39,8 +47,16 @@ class SiteTest extends DuskTestCase
         });
     }
 
-    // Index Test while logged in 
-    // Should send you to the dashboard
+    /**
+     * /                                - index                 [not login protected]
+     * 
+     * Index Test while logged in 
+     * Should send you to the dashboard
+     * 
+     * @group BrowserSiteTest 
+     * @test
+     * @return void
+     */
     public function testIndexLoggedIn()
     {
         $user = User::first();
@@ -52,14 +68,15 @@ class SiteTest extends DuskTestCase
     }
 
     /**
+     * /question/{question}/submit      - question submit       [login protected]
+     * 
      * Question Submit Page Test while logged in 
      * Get a user & a question they haven't answered yet
      * Pick an answer and then submit
      * Should show "Question Results Page" in heading
      * 
-     * /question/{question}/submit      - question submit       [login protected]
-     * 
-     * @group SiteTest 
+     * @group BrowserSiteTest 
+     * @test
      * @return void
      */
     public function testQuestionSubmitPageLoggedInHaveNotAnswered()

@@ -16,7 +16,7 @@
                     @foreach($question->options as $key2=>$option)
                         <li class="list-group-item">
                             @if($answer_counts[$option->id] <= 0)
-                                No one answered 
+                                No one  
                             @elseif($answer_counts[$option->id] == 1)
                                 {{ $answer_counts[$option->id] }} Person 
                             @else

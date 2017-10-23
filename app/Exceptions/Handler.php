@@ -51,8 +51,7 @@ class Handler extends ExceptionHandler
     {
         if ($exception instanceof MethodNotAllowedHttpException) 
         {
-            // Handle bad post/gets
-            return redirect('/');
+            return response()->view('pages.errors', [], 405);
             // return response()->json( [
             //         'success' => 0,
             //         'message' => 'Method is not allowed for the requested route',

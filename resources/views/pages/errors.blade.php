@@ -2,14 +2,14 @@
 
 @section('content-nav')
             <div class="panel panel-default">
-                <div class="panel-heading">Welcome to the AbleTo App</div>
+                <div class="panel-heading">Error Page</div>
             </div>
 @endsection
 
 @section('content')
             <div class="panel panel-default">
                 <div class="panel-body">
-                    You can register/login and answer some behavioral questions here.
+                    Looks like something went wrong.
                 </div>
             </div>
 @endsection
