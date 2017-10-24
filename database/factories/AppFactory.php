@@ -23,7 +23,7 @@ $factory->define(App\Question::class, function (Faker $faker) {
 $factory->define(App\Option::class, function (Faker $faker) {
     // Pick a question and associate it
     // Filter to questions that have less than (MaxOptions) options so we don't over do it
-    $MaxOptions = 4;
+    $MaxOptions = 5;
     $questions = App\Question::get()->filter(function ($question) use ($MaxOptions) {
         $options_count = count($question->options);
         return $options_count < $MaxOptions;

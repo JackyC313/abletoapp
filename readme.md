@@ -289,8 +289,6 @@ php artisan dusk:make SiteTest
 
 ## TODO Notes
 [Pending]
-* (mid priority): Can add pagination for questions when it gets to be a lot (more than 5 for each group [answered, unanswered])
-* (low priority): Create Seeder with better question/answers instead of relying on faker
 * (low priority): Could probably make the question dynamically show via a hidden div when an unanswered question is clicked on the dashboard providing a smoother user friendly experience instead of a page refresh/reload.
 * (low priority): Build all browser tests in dusk
 * (low priority): Could probably do more graphs for fun
@@ -298,10 +296,13 @@ php artisan dusk:make SiteTest
     * All Answers vs Number of Answers
 
 [Done]
+* (mid priority): Added pagination for questions on dashboard page (limit of 5 for each group [answered, unanswered])
+* (mid priority): Create Seeder with better question/answers instead of relying on faker
+* (high priority): Top nav issue on mobile
 * (low priority): Add Table of Contents to readme (used a neat tool @https://ecotrust-canada.github.io/markdown-toc/ to generate ToC )
-* (high): Refactored Site Unit Tests
-* (high): Added Model Factory Unit Tests
-* (high): Fix up Controller comments
-* (low): Should probably move the dashboard link to the top (protected by authentication) so it's more convenient
-* (high): Push a stable version to production
+* (high priority): Refactored Site Unit Tests
+* (high priority): Added Model Factory Unit Tests
+* (high priority): Fix up Controller comments
+* (low priority): Should probably move the dashboard link to the top (protected by authentication) so it's more convenient
+* (high priority): Push a stable version to production
 
