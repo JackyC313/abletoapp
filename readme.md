@@ -88,10 +88,17 @@ php composer install --no-dev
 ```
 php artisan key:generate
 ```
-5. Generate tables and then run db seed to get some test data
+5. Generate tables
 ```
 php artisan migrate
+```
+6.  Generate test data (dummy users, questions, options and answers)
+```
 php artisan db:seed
+```
+Or generate real data (Real questions and options. NOTE running this clear's the db first)
+```
+php artisan db:seed --class=ProductionDataSeeder  
 ```
 
 ## App Testing
@@ -117,12 +124,18 @@ DEV NOTES:
 * Options created look for Questions that has less than 4 options already so as to not fill it up too much with options
 * Answers create make sure that user's only have 1 answer for each question  
 
+Seeding test data
 ```
 php artisan db:seed --class=UsersTableSeeder  
 php artisan db:seed --class=QuestionsTableSeeder  
 php artisan db:seed --class=AnswersTableSeeder  
 or just
 php artisan db:seed
+```
+
+Seeding real questions and options
+```
+php artisan db:seed --class=ProductionDataSeeder  
 ```
 
 DEV NOTE: 
@@ -196,7 +209,7 @@ May need to explore this more in the future on whether the batch notation is bat
     * Submission
 8. Test Data Seeding
     * Users Seed
-    * Questions Seed (should create up to 4 options for each question)
+    * Questions Seed (should create up to 5 options for each question)
     * Answers Seed
 
 ## Developer Notes
